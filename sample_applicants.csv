@@ -1,0 +1,7 @@
+ApplicantId,ProfileName,Age,AppliedAmount,Amount,Interest,LoanDuration,MonthlyPayment,IncomeTotal,ExistingLiabilities,LiabilitiesTotal,DebtToIncome,FreeCash,NewCreditCustomer,Country,Education,EmploymentStatus,HomeOwnershipType,AmountOfPreviousLoansBeforeLoan,NoOfPreviousLoansBeforeLoan,PreviousRepaymentsBeforeLoan,Gender
+APP-101,Prime Low-Risk Borrower,42,3000,3000,12.5,36,98.5,3200,1,150,0.047,2951.5,No,EE,Higher,Fully employed,Owner,6000,2,6000,Male
+APP-102,Moderate-Risk Prime Candidate,34,5000,5000,19.8,48,151.2,2100,2,420,0.200,1528.8,Yes,EE,Secondary,Fully employed,Tenant,0,0,0,Female
+APP-103,High-Risk Over-Leveraged,28,7500,7500,34.0,60,256.0,1400,5,650,0.464,494.0,No,ES,Vocational,Part-time,Tenant,2500,1,800,Male
+APP-104,Financial Inclusion (Thin-File / New),23,1200,1200,16.0,24,58.7,1250,0,0,0.000,1191.3,Yes,EE,Higher,Self-employed,Living with parents,0,0,0,Female
+APP-105,Senior Retiree Moderate Amount,63,2000,2000,14.2,36,68.6,1100,1,80,0.073,951.4,No,FI,Secondary,Retiree,Owner,3000,1,3000,Female
+APP-106,Subprime Stressed Borrower,49,10000,10000,38.5,60,370.0,1750,4,820,0.469,560.0,Yes,ES,Basic,Unemployed,Tenant,4000,2,1100,Male

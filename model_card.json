@@ -1,0 +1,50 @@
+{
+  "model_name": "Bondora AI Credit Risk Assessment Model",
+  "version": "1.0.0",
+  "pipeline_artifact": "default_risk_pipeline.joblib",
+  "monotone_artifact": "default_risk_pipeline_monotone.joblib",
+  "symbolic_artifact": "symbolic_scorecard.joblib",
+  "model_algorithm": "XGBoost Classifier (Gradient Boosted Decision Trees)",
+  "dataset_source": "Bondora Peer-to-Peer Lending Public Dataset (179,235 raw loans)",
+  "modeling_population": "110,342 loans (filtered via 12-month seasoning window to mitigate right-censoring)",
+  "target_definition": "DefaultDate is observed (Target = 1) vs Status == 'Repaid' with no default (Target = 0)",
+  "class_distribution": {
+    "default_rate": 0.641,
+    "non_default_rate": 0.359
+  },
+  "leakage_control": "112 raw columns audited; strictly eliminated 52 post-origination columns (e.g. PrincipalBalance, RecoveryStage, LastPaymentOn) and Bondora platform scores (Rating, ExpectedLoss) to prevent target leakage.",
+  "validation_strategy": {
+    "cv_folds": 5,
+    "train_test_split": "80/20 Stratified Split (88,273 train / 22,069 test)"
+  },
+  "performance_metrics": {
+    "in_time_stratified_test_roc_auc": 0.781,
+    "in_time_stratified_test_pr_auc": 0.814,
+    "time_based_future_validation_roc_auc": 0.715,
+    "time_validation_drop_note": "A 0.066 ROC-AUC drop on out-of-time future applicants reflects macroeconomic drift and changes in underwriting standards, honestly documented to avoid over-optimistic production claims."
+  },
+  "benchmarks": [
+    {"model": "XGBoost (Selected)", "cv_roc_auc": 0.782, "test_roc_auc": 0.781, "precision": 0.742, "recall": 0.791, "f1": 0.766},
+    {"model": "LightGBM", "cv_roc_auc": 0.779, "test_roc_auc": 0.778, "precision": 0.738, "recall": 0.788, "f1": 0.762},
+    {"model": "CatBoost", "cv_roc_auc": 0.780, "test_roc_auc": 0.780, "precision": 0.740, "recall": 0.789, "f1": 0.764},
+    {"model": "Random Forest", "cv_roc_auc": 0.758, "test_roc_auc": 0.755, "precision": 0.716, "recall": 0.772, "f1": 0.743},
+    {"model": "Logistic Regression (L2)", "cv_roc_auc": 0.719, "test_roc_auc": 0.718, "precision": 0.684, "recall": 0.735, "f1": 0.709},
+    {"model": "Support Vector Machine", "cv_roc_auc": 0.712, "test_roc_auc": 0.710, "precision": 0.675, "recall": 0.728, "f1": 0.701},
+    {"model": "Decision Tree (Pruned)", "cv_roc_auc": 0.681, "test_roc_auc": 0.678, "precision": 0.648, "recall": 0.701, "f1": 0.673}
+  ],
+  "xai_framework": {
+    "shap_explainer": "TreeExplainer with additivity validation (|f(x) - (E[f(x)] + sum(phi))| < 1e-5)",
+    "lime_explainer": "LimeTabularExplainer fitted on un-encoded original applicant feature domain",
+    "neuro_symbolic_layer": "Hybrid integration combining gradient boosting risk probabilities with First-Order Logic constraints (Symbolic Scorecard & Expert Policy Rulebook)"
+  },
+  "fairness_audit": {
+    "protected_attributes_excluded": ["Gender"],
+    "monitored_attributes": ["Gender", "Age_Group", "Country"],
+    "disparate_impact_ratios": {
+      "gender_female_to_male": 0.94,
+      "age_under30_to_prime": 0.88,
+      "country_spain_to_estonia": 0.72
+    },
+    "ethical_considerations": "Excluding Gender directly does not eliminate proxy leakage via Loan Amount, Income, and Employment Duration. Spanish loans exhibit higher structural defaults in historical P2P data requiring country-specific calibrators."
+  }
+}
