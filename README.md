@@ -31,7 +31,7 @@ An end-to-end Machine Learning and Explainable AI (XAI) underwriting web platfor
 Open your terminal inside the project directory:
 
 ```bash
-cd "C:\Users\Akshita\.gemini\antigravity\scratch\credit_risk_platform"
+cd "{app_directory_path}
 streamlit run app.py
 ```
 
